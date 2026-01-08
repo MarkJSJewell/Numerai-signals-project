@@ -1,0 +1,30 @@
+name: Numerai Daily Submission
+
+on:
+  schedule:
+    # Trigger at 13:00 UTC every day (adjust to Numerai's daily opening)
+    - cron: '0 13 * * *'
+  workflow_dispatch: # Allows you to run it manually for testing
+
+jobs:
+  build-and-submit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip' # Speeds up subsequent runs
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Submission Script
+        env:
+          NUMERAI_PUBLIC_ID: ${{ secrets.NUMERAI_PUBLIC_ID }}
+          NUMERAI_SECRET_KEY: ${{ secrets.NUMERAI_SECRET_KEY }}
+        run: python your_main_script.py
