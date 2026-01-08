@@ -2,7 +2,8 @@ name: Numerai Daily Master Pipeline
 
 on:
   schedule:
-    - cron: '0 13 * * *' # 1 PM UTC daily
+    # Runs at 13:00 UTC, Tuesday (2) through Saturday (6)
+    - cron: '0 13 * * 2-6'
   workflow_dispatch:      # Allows manual trigger button
 
 jobs:
