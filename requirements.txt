@@ -1,0 +1,11 @@
+numerapi
+pandas
+numpy
+scikit-learn
+pyarrow
+tqdm
+lightgbm
+xgboost
+catboost
+torch --index-url https://download.pytorch.org/whl/cpu
+python-dotenv
