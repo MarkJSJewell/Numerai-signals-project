@@ -9,6 +9,7 @@ on:
 jobs:
   run-pipeline:
     runs-on: ubuntu-latest
+    timeout-minutes: 120  # Give it up to 2 hours
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
