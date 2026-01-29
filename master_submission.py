@@ -131,6 +131,8 @@ def download_with_retry(napi, filename, max_retries=5, chunk_size=1024*1024):
 
 def upload_immediately(napi, file_path, model_key):
     """Uploads a single prediction file immediately to Numerai."""
+    
+    # 1. Check if model exists in config
     if model_key not in MODELS:
         print(f"   ⚠️ Configuration for {model_key} not found. Skipping upload.")
         return
@@ -138,6 +140,26 @@ def upload_immediately(napi, file_path, model_key):
     model_conf = MODELS[model_key]
     print(f"   📤 UPLOADING {model_key} -> {model_conf['name']}...")
     
+    # 2. 🛑 SANITY CHECK (Fixed)
+    # Use the 'file_path' argument passed to the function!
+    if os.path.exists(file_path):
+        # Calculate size in MB
+        file_size_mb = os.path.getsize(file_path) / (1024 * 1024)
+        
+        print(f"      📊 Stats: {file_size_mb:.2f} MB")
+
+        # SAFETY LIMIT: 50MB
+        # (Live files are usually < 5MB. If it's 50MB+, you likely predicted on training data)
+        if file_size_mb > 50:
+            print(f"      ❌ CRITICAL WARNING: File is {file_size_mb:.2f} MB.")
+            print("         This is suspiciously large for a live submission.")
+            print("         Aborting upload to prevent timeout.")
+            return  # Stop here, do not upload
+    else:
+        print(f"      ❌ Error: File not found at {file_path}")
+        return
+
+    # 3. Attempt Upload
     try:
         submission_id = napi.upload_predictions(file_path, model_id=model_conf['id'])
         print(f"      ✅ SUCCESS! Submission ID: {submission_id}")
