@@ -80,9 +80,9 @@ SUBMISSIONS_DIR.mkdir(exist_ok=True)
 DATE_STR = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # ⚠️ MEMORY SETTINGS (Optimized for GitHub Free Runners)
-SAMPLE_FRACTION = 0.04  # 4% Sample (Safe for 7GB RAM)
-ENHANCED_ROWS = 150000  # Reduced for Feature Engineering safety
-MAX_FEATURES = 600      # Reduce features slightly for Standard models
+SAMPLE_FRACTION = 0.03  # 3% Sample (Safe for 7GB RAM)
+ENHANCED_ROWS = 100000  # Reduced for Feature Engineering safety
+MAX_FEATURES = 500      # Reduce features slightly for Standard models
 
 # ============================================================
 # HELPER FUNCTIONS
