@@ -205,8 +205,11 @@ if __name__ == "__main__":
     total_rows = pq_file.metadata.num_rows
     sample_size = int(total_rows * SAMPLE_FRACTION)
     
-    # Load as float32 to save memory
-    df_train = pd.read_parquet(TRAINING_FILE, columns=cols_to_load).sample(n=sample_size, random_state=42).astype("float32")
+    # Force 32-bit precision to cut RAM usage in half immediately on load
+    df_train = pd.read_parquet(
+        TRAINING_FILE, 
+        columns=cols_to_load
+    ).sample(frac=SAMPLE_FRACTION, random_state=42).astype("float32")
     df_live = pd.read_parquet(LIVE_FILE, columns=feature_cols).astype("float32")
     
     X_train = df_train[feature_cols]
